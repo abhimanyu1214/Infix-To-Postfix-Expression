@@ -1,0 +1,121 @@
+Aim:- Write a program using c++ to convert infix to postfix expression.
+
+
+Algo:-
+
+Algorithm to convert Infix To Postfix:-
+
+1.	Scan the Infix string from left to right.
+2.	Initialize an empty stack.
+3.	If the scanned character is an operand, add it to the Postfix string.
+4.	If the scanned character is an operator and if the stack is empty push the character to stack.
+5.	If the scanned character is an Operator and the stack is not empty, compare the precedence of the character with the element on top of the stack.
+6.	If top Stack has higher precedence over the scanned character pop the stack else push the scanned character to stack. Repeat this step until the stack is not empty and top Stack has precedence over the character.
+7.	Repeat 4 and 5 steps till all the characters are scanned.
+8.	After all characters are scanned, we have to add any character that the stack may have to the Postfix string.
+9.	If stack is not empty add top Stack to Postfix string and Pop the stack.
+10.	Repeat this step as long as stack is not empty.
+11.stop.
+
+
+
+
+Program Code:-
+
+
+#include<bits/stdc++.h> 
+using namespace std; 
+  
+
+int prec(char c) 
+{ 
+    if(c == '^') 
+    return 3; 
+    else if(c == '*' || c == '/') 
+    return 2; 
+    else if(c == '+' || c == '-') 
+    return 1; 
+    else
+    return -1; 
+} 
+
+void infixToPostfix(string s) 
+{ 
+    std::stack<char> st; 
+    st.push('N'); 
+    int l = s.length(); 
+    string ns; 
+    for(int i = 0; i < l; i++) 
+    { 
+        
+        if((s[i] >= 'a' && s[i] <= 'z')||(s[i] >= 'A' && s[i] <= 'Z')) 
+        ns+=s[i]; 
+  
+        
+        else if(s[i] == '(') 
+          
+        st.push('('); 
+          
+       
+        else if(s[i] == ')') 
+        { 
+            while(st.top() != 'N' && st.top() != '(') 
+            { 
+                char c = st.top(); 
+                st.pop(); 
+               ns += c; 
+            } 
+            if(st.top() == '(') 
+            { 
+                char c = st.top(); 
+                st.pop(); 
+            } 
+        } 
+          
+       
+        else{ 
+            while(st.top() != 'N' && prec(s[i]) <= prec(st.top())) 
+            { 
+                char c = st.top(); 
+                st.pop(); 
+                ns += c; 
+            } 
+            st.push(s[i]); 
+        } 
+  
+    } 
+  
+    while(st.top() != 'N') 
+    { 
+        char c = st.top(); 
+        st.pop(); 
+        ns += c; 
+    } 
+      
+    cout << ns << endl; 
+  
+} 
+  
+
+int main() 
+{ 
+    string exp = "a+b*(c^d-e)^(f+g*h)-i"; 
+    infixToPostfix(exp); 
+    return 0; 
+} 
+
+
+
+
+*************************************************************************************************************************
+*********************************************************************************
+Output:-
+
+abcd^e-fgh*+^*+i-
+
+
+***************************************************************************************************************************************
+*************************************************
+
+Result:-All program are executed successfully.
+
